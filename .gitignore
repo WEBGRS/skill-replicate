@@ -1,0 +1,5 @@
+.DS_Store
+node_modules/
+# material from other people stays on the computer it was tried on
+evals/*/material/
+evals/*/runs/
