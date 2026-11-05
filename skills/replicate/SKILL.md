@@ -17,7 +17,7 @@ medium (a filmed shot as a drawing), or when it is the reference with new words 
 ## What has to be true
 
 - **The same moments and the same look, measured.** Every cut, change and sound hit of the reference is in the
-  remake within a frame or two, each change at the reference's pace, and each shot has its palette and layout.
+  remake within a frame or two, at its pace, and each shot has its palette and layout.
   `compare` measures this on the rendered film; its numbers are what you report.
 - **Each part made with what can look like it.** Text, type, captions, graphics, interfaces, charts and the motion of
   any of them are pages, exact and editable. What was filmed stays filmed: the person's footage, footage a video
@@ -31,22 +31,20 @@ medium (a filmed shot as a drawing), or when it is the reference with new words 
 
 ## What you have
 
-- `node <this skill's folder>/scripts/measure.mjs study <video>`: the reference in time, which frames looked at one by
-  one do not show: every cut to the frame, each change with where and its pace, the stretches it holds still, its
-  sound's hits and beat.
+- `node <this skill's folder>/scripts/measure.mjs study <video>`: the reference in time, which single frames do not
+  show: every cut to the frame, each change with where and its pace, its holds, its sound's hits and beat.
 - `npx openfilm look <video> a-b` shows a stretch of it frame by frame, `look <video> t` one frame.
 - `node <this skill's folder>/scripts/measure.mjs compare <reference> <render>`: the film against the reference: cuts,
   changes and hits matched with their offsets in frames, each change's pace, each shot's palette and layout (which hold
   when only the content changed), how alike the frames are, and side-by-side pictures where they differ most. Render
   the film with `npx openfilm render` to compare it, `--fit` when the lengths differ on purpose.
 - `npx openfilm get`: pictures made from the reference's frames with what to change (`--ref`, with `--mask` or
-  `--markup`), GIFs and SVGs; video clips from a first and last frame and reference pictures; voice, music, sound
-  effects, image search, and transcripts with each word's time. For what it does not make, any service the person
-  has, with its API docs and their key. Your own tools, the web platform and any library on it, or a renderer whose
-  output becomes a clip.
+  `--markup`), GIFs and SVGs; video clips made from a stretch of the reference (`--video`: each `--model` keeps it its
+  own way), or from a first and last frame and reference pictures; clips and pictures found on the web; voice, music,
+  sound effects, and transcripts with each word's time; otherwise any service the person has, with its API docs and
+  their key. Your own tools, the web platform and any library on it, or a renderer whose output becomes a clip.
 
-The reference, and any stretch of it cut out for a service, stay in `references/`. Ask before downloading anything
-large.
+The reference and its stretches cut out for a service stay in `references/`. Ask before large downloads.
 
 ## With the person
 
