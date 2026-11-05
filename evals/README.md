@@ -18,11 +18,17 @@ because the references are other people's videos.
 
 ## Requests
 
+One for each kind of video, since each is made of other parts: pages, filmed shots, people, sound.
+
 | folder | reference | asks for |
 | --- | --- | --- |
 | `exact-explainer` | 30 s of a light, interface-style code-animation explainer, with typing, voice and music | an exact copy |
-| `own-explainer` | the same 30 s | its form for "what happens in the 0.1 s after you press the shutter" |
-| `own-talking-head` | a minute of a vertical talking-head video with moving captions | its form for the person's own footage and script |
+| `own-explainer` | the same 30 s | the same look and timing for "what happens in the 0.1 s after you press the shutter" |
+| `product-ad` | a 15 s live-action product ad: close-ups, a hand, a table, light, captions | the same ad for the person's own product, from its photos |
+| `talking-head` | a minute of a vertical talking-head video with moving captions | the same video with the person's own footage and script |
+| `illustrated-story` | 30 s of an illustrated story with a recurring character | the same story look with the person's character and words |
+| `travel-broll` | 20 s of a travel montage cut to music | the same montage of the person's own city, from their clips and found footage |
+| `software-demo` | 30 s of a software demo with a cursor, zooms and callouts | the same demo of the person's own product |
 | `exact-launch` | the first 30 s of OpenFilm's own launch film | an exact copy |
 
 ## Results

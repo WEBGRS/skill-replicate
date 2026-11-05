@@ -1,55 +1,57 @@
 ---
 name: replicate
-description: Remake a video in OpenFilm as close as the person wants it, from the same film frame for frame to its form (its parts, rhythm, look and motion) carrying their own content. Use when the person gives a video, as a file or a link, and asks for an exact copy of it, one like it, its style or pacing, or a remake for their product or topic (复刻, 照着做, 做个同款, 一模一样, 仿这个视频).
+description: Remake a video in OpenFilm so that it looks and moves like the reference, shot for shot, with only the content the person names changed (their product, people, words, topic or footage), or as an exact copy, frame for frame. Use when the person gives a video, as a file or a link, and asks for a copy of it, one like it, its style or pacing, or the same video for their product or topic (复刻, 照着做, 做个同款, 一模一样, 仿这个视频).
 ---
 
 # Replicate a video
 
-A remake of a video the person admires, made again in OpenFilm so that every part of it can be changed. They say how
-close: the same film frame for frame, or its form carrying their own content. When their words do not say which, ask.
+The reference made again in OpenFilm: each shot looks and moves as the reference's does, at the same moments, and
+only what the person names changes (their product, face, words or topic). Every part can be edited afterwards. When
+they name nothing to change, it is a copy, frame for frame.
 
-**What makes it a replica is time.** The same thing happens at the same moment and moves the same way: the cut lands on
-the same frame, a title starts, speeds up and settles when the reference's does, a word appears with its voice, a sound
-hits with what makes it. A remake that looks like the reference but keeps its own clock, moves at an even pace where the
-reference eases, or holds still where the reference moves is not a replica, however good each frame looks.
+**A replica is the reference's look and time, carrying new content.** The cut lands on the same frame; a title
+starts, speeds up and settles when the reference's does; a shot has the same framing, light, colours and type; a
+sound hits with what makes it. It is not a replica when it keeps its own clock, when a shot is redrawn in another
+medium (a filmed shot as a drawing), or when it is the reference with new words laid over it.
 
 ## What has to be true
 
-- **The same moments, measured.** Every cut, change and sound hit of the reference is in the remake within a frame or
-  two (scaled, when the lengths differ on purpose), and each change has the reference's length and pace. `compare`
-  measures this on the rendered film; its numbers are what you report, not your own reading.
-- **The same pictures, for an exact copy.** Each frame matches the reference's frame at the same time: every word as it
-  is, the layout, colours and type as close as they can be made. Look at the least alike moments side by side until
-  nothing more can be closed.
-- **Made again.** The reference stays in `references/` and is never a clip of the film. What the film shows is made
-  anew: text as text, shapes and motion as pages, footage from the person or from the services they have. The
-  reference's own music, footage or voice go in only when the person asks for them.
-- **Their version is theirs.** With their own content, every part carries their topic, product, words and material at
-  the reference's timing and pace, and a part they have nothing for takes a job that fits their film. The reference
-  with new words dropped in is not done.
+- **The same moments and the same look, measured.** Every cut, change and sound hit of the reference is in the
+  remake within a frame or two, each change at the reference's pace, and each shot has its palette and layout.
+  `compare` measures this on the rendered film; its numbers are what you report.
+- **Each part made with what can look like it.** Text, type, captions, graphics, interfaces, charts and the motion of
+  any of them are pages, exact and editable. What was filmed stays filmed: the person's footage, footage a video
+  service makes from the reference's shot or from a still made to match it, or footage found to fit. Each shot keeps
+  as much of the reference as the change allows.
+- **Their content, and no one else's.** What changes is the person's: their product, words, voice and face, or a
+  person made up for the film, never another real person's face or voice. The reference's footage, music or voice go
+  into the film, or into a service that edits them, only when the person says they may use them.
+- **Seen before it costs.** Before anything that costs is made, the person has seen the shot list: for each shot,
+  what stays, what changes, what makes it and about what it costs. What they change there is what is made.
 
 ## What you have
 
 - `node <this skill's folder>/scripts/measure.mjs study <video>`: the reference in time, which frames looked at one by
-  one do not show: every cut to the frame; each change, where in the frame and from when to when, with its pace frame
-  by frame; the stretches where it holds still; its sound's hits and beat. It writes study.md beside the video.
-- `npx openfilm look <video> a-b` shows any stretch of it frame by frame, and `look <video> t` one frame at full size.
-- `node <this skill's folder>/scripts/measure.mjs compare <reference> <render>`: the film against the reference. Cuts,
-  changes and sound hits matched, with their offsets in frames; each change's pace and length; a rhythm score; how
-  alike the pictures are, shot by shot; and side-by-side pictures where they differ most. Render the film with
-  `npx openfilm render` to compare it, `--fit` when the lengths differ on purpose.
-- The reference's words with each one's time, from a transcript by `npx openfilm get` when the person has a service for
-  it. Voice, music, sound effects, images, video and image search from `get` too; your own built-in tools; and anything
-  that makes pictures, motion and sound: the web platform and any library on it, or a renderer whose output becomes a
-  clip.
+  one do not show: every cut to the frame, each change with where and its pace, the stretches it holds still, its
+  sound's hits and beat.
+- `npx openfilm look <video> a-b` shows a stretch of it frame by frame, `look <video> t` one frame.
+- `node <this skill's folder>/scripts/measure.mjs compare <reference> <render>`: the film against the reference: cuts,
+  changes and hits matched with their offsets in frames, each change's pace, each shot's palette and layout (which hold
+  when only the content changed), how alike the frames are, and side-by-side pictures where they differ most. Render
+  the film with `npx openfilm render` to compare it, `--fit` when the lengths differ on purpose.
+- `npx openfilm get`: pictures made from the reference's frames with what to change (`--ref`, with `--mask` or
+  `--markup`), GIFs and SVGs; video clips from a first and last frame and reference pictures; voice, music, sound
+  effects, image search, and transcripts with each word's time. For what it does not make, any service the person
+  has, with its API docs and their key. Your own tools, the web platform and any library on it, or a renderer whose
+  output becomes a clip.
 
-Ask before downloading anything large onto the person's computer.
+The reference, and any stretch of it cut out for a service, stay in `references/`. Ask before downloading anything
+large.
 
 ## With the person
 
-What they ask for comes before anything here. Ask for the reference (a file, or a link you can download), how close
-they want it, what their version is about and the material they have, and where it will be posted; ask without
-holding up the work. When it is done, tell them in a few lines what was kept, what changed and why, the numbers from
-`compare` (cuts, changes, rhythm, and for an exact copy how alike the pictures are), what could not be matched and
-why, and, if they will post it, which parts belong to someone else: footage, music, voice, faces, logos, words,
-typefaces.
+What they ask for comes first. Ask for the reference (a file, or a link you can download), what is to change and
+their material for it (their product, footage, photos, logo, script, voice), whether they may use the
+reference's own footage, music and voice, and where it will be posted; ask without holding up the work. When it is
+done, tell them in a few lines what was kept, what changed and how each shot was made, the numbers from `compare`,
+what could not be matched and why, and, if they will post it, which parts come from the reference or someone else.

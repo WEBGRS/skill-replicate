@@ -563,6 +563,40 @@ const colourMatch = (a, b) => {
   return 1 - s / a.length / 255;
 };
 
+/* a palette's bins: 12 hues × 2 saturations × 3 brightnesses for colours, and 4 brightnesses for greys */
+const BINS_COLOUR = 72;
+/** A colour picture's palette: the share of its pixels in each bin, by hue, saturation and brightness. @param {Uint8Array} rgb */
+function palette(rgb) {
+  const bins = new Float64Array(BINS_COLOUR + 4);
+  for (let i = 0; i < rgb.length; i += 3) {
+    const r = rgb[i] / 255, g = rgb[i + 1] / 255, b = rgb[i + 2] / 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+    const sat = max ? d / max : 0;
+    if (sat < 0.06 || d < 0.03) { bins[BINS_COLOUR + Math.min(3, Math.floor(max * 4))]++; continue; }
+    let hue = max === r ? ((g - b) / d) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    hue = (hue * 60 + 360) % 360;
+    bins[(Math.floor(hue / 30) * 2 + (sat < 0.35 ? 0 : 1)) * 3 + Math.min(2, Math.floor(max * 3))]++;
+  }
+  const n = rgb.length / 3;
+  for (let q = 0; q < bins.length; q++) bins[q] /= n;
+  return bins;
+}
+
+/** A grey picture's layout: where it is light and dark, as a 16 × 9 grid of mean brightness. @param {Uint8Array} g @param {number} w @param {number} h */
+function layout(g, w, h) {
+  const out = new Float64Array(16 * 9);
+  const count = new Float64Array(16 * 9);
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const c = Math.min(8, Math.floor((y * 9) / h)) * 16 + Math.min(15, Math.floor((x * 16) / w));
+      out[c] += g[y * w + x];
+      count[c]++;
+    }
+  }
+  for (let c = 0; c < out.length; c++) out[c] /= count[c] || 1;
+  return [...out];
+}
+
 /** Pearson correlation of two series of the same length. @param {number[]} a @param {number[]} b */
 function correlation(a, b) {
   const n = Math.min(a.length, b.length);
@@ -703,9 +737,27 @@ async function compare(refFile, remakeFile, { out, fit = false }) {
     perFrame.push({ i, ssim: ssim(a.grey[i], b.grey[k], a.w, a.h), colour: colourMatch(a.colour[i], b.colour[k]) });
   }
   const mean = (/** @type {number[]} */ xs) => (xs.length ? xs.reduce((s, x) => s + x, 0) / xs.length : 0);
+  /* each shot's look whatever is in it: its palette (the share of colours both have) and its layout (where it is
+     light and dark), over the shot's frames together; they hold when the content changes and the look does not */
   const shots = pa.shots.map((/** @type {any} */ s) => {
-    const fs = perFrame.slice(s.firstFrame, Math.round(s.to * ref.fps));
-    return { from: s.from, to: s.to, ssim: round(mean(fs.map((f) => f.ssim))), colour: round(mean(fs.map((f) => f.colour))) };
+    const last = Math.min(n, Math.max(s.firstFrame + 1, Math.round(s.to * ref.fps)));
+    const fs = perFrame.slice(s.firstFrame, last);
+    const pa2 = new Float64Array(BINS_COLOUR + 4), pb2 = new Float64Array(BINS_COLOUR + 4);
+    const la = new Array(144).fill(0), lb = new Array(144).fill(0);
+    for (let i = s.firstFrame; i < last; i++) {
+      const k = Math.min(b.grey.length - 1, Math.round(i * scale));
+      palette(a.colour[i]).forEach((v, q) => { pa2[q] += v; });
+      palette(b.colour[k]).forEach((v, q) => { pb2[q] += v; });
+      layout(a.grey[i], a.w, a.h).forEach((v, q) => { la[q] += v; });
+      layout(b.grey[k], b.w, b.h).forEach((v, q) => { lb[q] += v; });
+    }
+    const frames = last - s.firstFrame;
+    let shared = 0;
+    for (let q = 0; q < pa2.length; q++) shared += Math.min(pa2[q], pb2[q]) / frames;
+    return {
+      from: s.from, to: s.to, ssim: round(mean(fs.map((f) => f.ssim))), colour: round(mean(fs.map((f) => f.colour))),
+      palette: round(shared, 2), layout: round(correlation(la, lb), 2),
+    };
   });
   /* the least alike moments, half a second apart at least */
   const worst = [];
@@ -745,7 +797,10 @@ async function compare(refFile, remakeFile, { out, fit = false }) {
       rhythm: round(rhythm, 2),
     },
     motion,
-    pictures: { ssim: round(mean(perFrame.map((f) => f.ssim))), colour: round(mean(perFrame.map((f) => f.colour))), shots, worst: worstShown },
+    pictures: {
+      ssim: round(mean(perFrame.map((f) => f.ssim))), colour: round(mean(perFrame.map((f) => f.colour))),
+      palette: round(mean(shots.map((x) => x.palette)), 2), layout: round(mean(shots.map((x) => x.layout)), 2), shots, worst: worstShown,
+    },
   };
   writeFileSync(join(folder, 'compare.json'), `${JSON.stringify(json, null, 1)}\n`);
 
@@ -779,15 +834,16 @@ async function compare(refFile, remakeFile, { out, fit = false }) {
     '',
     '## Pictures',
     '',
-    `Frame by frame: SSIM ${json.pictures.ssim}, colour ${json.pictures.colour} (1 is the same; these matter for an exact copy).`,
+    `The look, shot by shot, whatever is in it: palette ${json.pictures.palette} (the share of colours both have), layout ${json.pictures.layout} (where both are light and dark, 1 alike). They hold when only the content changed.`,
+    `Frame by frame: SSIM ${json.pictures.ssim}, colour ${json.pictures.colour} (1 is the same; these fall as the content changes, and matter for a frame-for-frame copy).`,
     '',
-    ...shots.map((s, k) => `- shot ${k + 1} ${fmt(s.from)}–${fmt(s.to)}: SSIM ${s.ssim}, colour ${s.colour}`),
+    ...shots.map((s, k) => `- shot ${k + 1} ${fmt(s.from)}–${fmt(s.to)}: palette ${s.palette}, layout ${s.layout}; SSIM ${s.ssim}, colour ${s.colour}`),
     '',
     `Least alike: ${worstShown.map((w) => `${fmt(w.at)} (${w.ssim}${w.picture ? `, ${w.picture}` : ''})`).join(' · ')}`,
     '',
   ];
   writeFileSync(join(folder, 'compare.md'), lines.join('\n'));
-  console.log(`cuts ${t.cuts.within}/${t.cuts.total}, starts ${t.starts.within}/${t.starts.total}, rhythm ${t.rhythm}, SSIM ${json.pictures.ssim}`);
+  console.log(`cuts ${t.cuts.within}/${t.cuts.total}, starts ${t.starts.within}/${t.starts.total}, rhythm ${t.rhythm}, palette ${json.pictures.palette}, layout ${json.pictures.layout}, SSIM ${json.pictures.ssim}`);
   console.log(`→ ${relative(process.cwd(), join(folder, 'compare.md')) || join(folder, 'compare.md')}`);
 }
 
