@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": "https://github.com/openfilm/skill-replicate/tree/main/skills/replicate",
   "kind": "workflow",
   "icon": "copy",
