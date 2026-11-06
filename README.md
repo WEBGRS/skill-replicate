@@ -38,7 +38,7 @@ Both need only Node and ffmpeg, which OpenFilm needs too, and take seconds.
 | | |
 | --- | --- |
 | `skills/replicate/` | the skill: everything in it is what the agent gets |
-| `evals/` | the real requests it is tried on, and what was measured |
+| `evals/README.md` | the real requests it was tried on, with and without it, and what was measured |
 | `CHANGELOG.md` | what changed in each version |
 
 How a skill for OpenFilm is written: [SPEC.md](https://github.com/openfilm/skills/blob/main/SPEC.md).
