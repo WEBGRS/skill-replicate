@@ -4,8 +4,10 @@ Newest first. Each version is the one in `skills/replicate/openfilm.json`, and i
 
 ## 0.1.1
 
-Who speaks on screen speaks in the picture: lips, voice and captions are one take, the voice made with the picture or
-the picture made from the voice, never a voice laid over a clip made without it; a person keeps one face and one voice.
+A shot's sound comes with its picture. Who speaks on screen speaks in the picture: lips, voice and captions are one
+take, the voice made with the picture or the picture made from the voice, never a voice laid over a clip made without
+it. The room, steps and hits a clip makes come with it, and only what runs across cuts (music, a voice off screen) is a
+track of its own. A person keeps one face and one voice.
 A person made up for the film passes for no real one, not even the reference's people. Tried on a vertical presenter
 video, where a voice laid over generated clips had left lips and words apart.
 
