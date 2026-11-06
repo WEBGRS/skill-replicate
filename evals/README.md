@@ -30,7 +30,18 @@ One for each kind of video, since each is made of other parts: pages, filmed sho
 | `travel-broll` | 20 s of a travel montage cut to music | the same montage of the person's own city, from their clips and found footage |
 | `software-demo` | 30 s of a software demo with a cursor, zooms and callouts | the same demo of the person's own product |
 | `exact-launch` | the first 30 s of OpenFilm's own launch film | an exact copy |
+| `brand-swap` | 32 s of a product film that shows its own app at work, no sound | the same film for the person's app, of which they give no screens |
 
 ## Results
 
-None yet.
+Codex (gpt-6.1-sol, high), each side in a home of its own, video made only with the cheapest model the person allowed.
+
+| request | skill | with: rhythm, starts ≤ 1 frame, layout, SSIM | without | seen |
+| --- | --- | --- | --- | --- |
+| `own-explainer` | 0.1.0 | 0.78, 20/25, 0.76, 0.75 | 0.20, 7/25, 0.49, 0.66 | both change the content well; with the skill, states change at the reference's moments |
+| `exact-explainer` | 0.1.0 | 0.92, 19/25, 0.96, 0.92 | imported the reference as the film | without the skill nothing is made again, nothing can change |
+| `talking-head` (a vertical presenter) | 0.1.1 | 0.42, 4/24, 0.37, 0.23 | -0.08, 1/24, 0.31, 0.15 | both make the person speak in the picture; with the skill the shots follow the reference's one by one |
+| `software-demo` | 0.1.2 draft | 0.81, 18/31, 0.86, 0.49 | 0.27, 5/31, 0.58, 0.31 | 0.1.1 kept the reference's editor around the person's app; once the subject is named first, the app has its own screens in the reference's framing and moves |
+| `brand-swap` | 0.1.2 draft | 0.34, 15/65, 0.96, 0.69 | -0.02, 15/65, 0.17, 0.31 | with the skill the person's app still takes the reference's three-column layout, a timeline-like bottom panel and film-like titles; open |
+
+Numbers come from `compare`, which the skill's agent also has, so they lean its way; what was seen decides.

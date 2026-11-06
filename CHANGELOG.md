@@ -2,6 +2,16 @@
 
 Newest first. Each version is the one in `skills/replicate/openfilm.json`, and is tagged `v<version>`.
 
+## 0.1.2
+
+The reference's subject is content. Name first what it shows and sells (whose product, app, brand or story), then show
+the person's in its place: their app's own screens, designed as such an app is when they give none, not the reference's
+interface renamed or around them; their thing, not the reference's relabelled. How it is shown stays: framing, camera,
+type, colour, motion, time. The shot list starts with the reference's subject and the person's. `compare`'s numbers
+drop where content changed, as they should. Tried on a software
+demo and a product film whose references show their own app: before, the remake kept the reference's editor and put
+the person's app inside it.
+
 ## 0.1.1
 
 A shot's sound comes with its picture. Who speaks on screen speaks in the picture: lips, voice and captions are one
